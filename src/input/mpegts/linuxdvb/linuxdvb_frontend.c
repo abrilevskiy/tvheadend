@@ -549,7 +549,7 @@ linuxdvb_frontend_monitor ( void *aux )
 
   if(!ioctl(lfe->lfe_fe_fd, FE_GET_PROPERTY, &dtv_prop)) {
     if(fe_properties[0].u.st.len > 0) {
-      tvhdebug("linuxdvb", "Actual scale %s; expected FE_SCALE_RELATIVE %s", fe_properties[0].u.st.stat[0].scale, FE_SCALE_RELATIVE);
+      tvhdebug("linuxdvb", "Actual scale %d; expected FE_SCALE_RELATIVE %d", fe_properties[0].u.st.stat[0].scale, FE_SCALE_RELATIVE);
       if(fe_properties[0].u.st.stat[0].scale == FE_SCALE_RELATIVE)
         mmi->mmi_stats.signal = (fe_properties[0].u.st.stat[0].uvalue * 100) / 0xffff;
       /* TODO: handle other scales */
