@@ -532,7 +532,7 @@ linuxdvb_frontend_monitor ( void *aux )
 
   /* Statistics - New API */
 #if DVB_VER_ATLEAST(5,10)
-tvhlog(LOG_INFO, "htsp", "DVB_VER_ATLEAST(5,10) is true");
+tvhlog(LOG_INFO, "htsp", "DVB_VER_ATLEAST(5,10) is true, filling");
   tvhdebug("linuxdvb", "DVB_VER_ATLEAST(5,10) is true");
   memset(&fe_properties, 0, sizeof(fe_properties));
   fe_properties[0].cmd = DTV_STAT_SIGNAL_STRENGTH;
@@ -547,9 +547,11 @@ tvhlog(LOG_INFO, "htsp", "DVB_VER_ATLEAST(5,10) is true");
   fe_properties[5].cmd = DTV_STAT_TOTAL_BLOCK_COUNT;
   dtv_prop.num = 6;
   dtv_prop.props = fe_properties;
-
+  tvhlog(LOG_INFO, "htsp", "!ioctl(lfe->lfe_fe_fd, FE_GET_PROPERTY, &dtv_prop)");
   if(!ioctl(lfe->lfe_fe_fd, FE_GET_PROPERTY, &dtv_prop)) {
+    tvhlog(LOG_INFO, "htsp", "TRUE: !ioctl(lfe->lfe_fe_fd, FE_GET_PROPERTY, &dtv_prop)");
     if(fe_properties[0].u.st.len > 0) {
+      tvhlog(LOG_INFO, "htsp", "TRUE: fe_properties[0].u.st.len > 0");
       tvhlog(LOG_INFO, "htsp", "Actual scale %d; expected FE_SCALE_RELATIVE %d", fe_properties[0].u.st.stat[0].scale, FE_SCALE_RELATIVE);
       tvhdebug("linuxdvb", "Actual scale %d; expected FE_SCALE_RELATIVE %d", fe_properties[0].u.st.stat[0].scale, FE_SCALE_RELATIVE);
       if(fe_properties[0].u.st.stat[0].scale == FE_SCALE_RELATIVE)
