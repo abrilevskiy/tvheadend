@@ -532,6 +532,7 @@ linuxdvb_frontend_monitor ( void *aux )
 
   /* Statistics - New API */
 #if DVB_VER_ATLEAST(5,10)
+  tvhdebug("linuxdvb", "DVB_VER_ATLEAST(5,10) is true");
   memset(&fe_properties, 0, sizeof(fe_properties));
   fe_properties[0].cmd = DTV_STAT_SIGNAL_STRENGTH;
 
@@ -548,6 +549,7 @@ linuxdvb_frontend_monitor ( void *aux )
 
   if(!ioctl(lfe->lfe_fe_fd, FE_GET_PROPERTY, &dtv_prop)) {
     if(fe_properties[0].u.st.len > 0) {
+      tvhdebug("linuxdvb", "Actual scale %s; expected FE_SCALE_RELATIVE %s", fe_properties[0].u.st.stat[0].scale, FE_SCALE_RELATIVE);
       if(fe_properties[0].u.st.stat[0].scale == FE_SCALE_RELATIVE)
         mmi->mmi_stats.signal = (fe_properties[0].u.st.stat[0].uvalue * 100) / 0xffff;
       /* TODO: handle other scales */
@@ -593,6 +595,7 @@ linuxdvb_frontend_monitor ( void *aux )
   } else
 #endif
   {
+    tvhdebug("linuxdvb", "DVB_VER_ATLEAST(5,10) is false");
     if (!ioctl(lfe->lfe_fe_fd, FE_READ_SIGNAL_STRENGTH, &u16))
       mmi->mmi_stats.signal = u16;
     if (!ioctl(lfe->lfe_fe_fd, FE_READ_BER, &u32))
